@@ -28,6 +28,7 @@
       font-size: 16px;
       line-height: 1.6;
       user-select: none;
+      position: relative;
     }
 
     .node {
@@ -42,11 +43,6 @@
       margin-left: 20px;
     }
 
-    .line {
-      opacity: 1;
-    }
-
-    /* Colore specifico per il file */
     .muted {
       color: #9c9c9c;
       cursor: pointer;
@@ -55,11 +51,30 @@
     .muted:hover {
       text-decoration: none;
     }
+
+    /* LINEA INTERMITTENTE */
+    .blinking-line {
+      position: absolute;
+      left: -30px;
+      top: 0;
+      color: #9c9c9c;
+      animation: blink 1.6s infinite;
+    }
+
+    @keyframes blink {
+      0%   { opacity: 0.15; }
+      50%  { opacity: 1; }
+      100% { opacity: 0.15; }
+    }
   </style>
 </head>
 
 <body>
+
   <div class="tree">
+
+    <!-- linea intermittente -->
+    <div class="blinking-line">│</div>
 
     <!-- ROOT -->
     <div class="node" onclick="toggleRoot()">
@@ -68,19 +83,26 @@
 
     <!-- LIVELLO 1 -->
     <div id="level1" class="hidden indent">
-      <div class="line">│</div>
+      <div>│</div>
 
-      <div class="node" onclick="toggleArticoli(event)">
-        └── Articoli
+      <!-- ARCHIVIO -->
+      <div class="node" onclick="toggleArchivio(event)">
+        └── Archivio
       </div>
 
       <!-- LIVELLO 2 -->
       <div id="level2" class="hidden indent">
-        <div class="line">│</div>
+        <div>│</div>
+
         <div class="node muted" onclick="location.href='01.html'">
           └── Visione del mondo.txt
         </div>
+
+        <div class="node muted">
+          └── MAGA.mp4
+        </div>
       </div>
+
     </div>
 
   </div>
@@ -100,10 +122,11 @@
       }
     }
 
-    function toggleArticoli(e) {
+    function toggleArchivio(e) {
       e.stopPropagation();
       document.getElementById("level2").classList.toggle("hidden");
     }
   </script>
+
 </body>
 </html>
