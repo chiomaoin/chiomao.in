@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Computer di Luca</title>
+
+  <style>
+    @font-face {
+      font-family: "MinimalFont";
+      src: url("https://files.catbox.moe/nt86rd.woff2") format("woff2");
+      font-display: swap;
+    }
+
+    html, body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      background: #000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: "MinimalFont", monospace;
+      color: white;
+    }
+
+    .tree {
+      font-size: 16px;
+      line-height: 1.6;
+      user-select: none;
+    }
+
+    .node {
+      cursor: pointer;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .indent {
+      margin-left: 20px;
+    }
+
+    .line {
+      opacity: 1;
+    }
+
+    /* Colore specifico per il file */
+    .muted {
+      color: #9c9c9c;
+      cursor: default;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="tree">
+
+    <!-- ROOT -->
+    <div class="node" onclick="toggleRoot()">
+      Computer di Luca
+    </div>
+
+    <!-- LIVELLO 1 -->
+    <div id="level1" class="hidden indent">
+      <div class="line">│</div>
+
+      <div class="node" onclick="toggleArticoli(event)">
+        └── Articoli
+      </div>
+
+      <!-- LIVELLO 2 -->
+      <div id="level2" class="hidden indent">
+        <div class="line">│</div>
+        <div class="node muted">
+          └── Visione del mondo.txt
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    function toggleRoot() {
+      const level1 = document.getElementById("level1");
+      const level2 = document.getElementById("level2");
+
+      const isOpen = !level1.classList.contains("hidden");
+
+      if (isOpen) {
+        level1.classList.add("hidden");
+        level2.classList.add("hidden");
+      } else {
+        level1.classList.remove("hidden");
+      }
+    }
+
+    function toggleArticoli(e) {
+      e.stopPropagation();
+      document.getElementById("level2").classList.toggle("hidden");
+    }
+  </script>
+</body>
+</html>
