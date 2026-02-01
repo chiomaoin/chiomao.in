@@ -1,128 +1,166 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Computer di Luca</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
 
-  <style>
-    @font-face {
-      font-family: "MinimalFont";
-      src: url("https://files.catbox.moe/nt86rd.woff2") format("woff");
-      font-display: swap;
-    }
+    <style>
+        * {
+            box-sizing: border-box;
+        }
 
-    html, body {
-      margin: 0;
-      width: 100%;
-      height: 100%;
-      background: #000;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-family: "MinimalFont", monospace;
-      color: white;
-    }
+        html {
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
 
-    .tree {
-      font-size: 16px;
-      line-height: 1.6;
-      user-select: none;
-      position: relative;
-    }
+        /* FONT PRINCIPALE */
+        @font-face {
+            font-family: "ChiomaFont";
+            src: url("https://files.catbox.moe/bdhwbm.ttf") format("truetype");
+        }
 
-    .node {
-      cursor: pointer;
-    }
+        /* FONT SOLO PER LUCA */
+        @font-face {
+            font-family: "LucaFont";
+            src: url("https://files.catbox.moe/w4j66z.woff2") format("woff2");
+        }
 
-    .hidden {
-      display: none;
-    }
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background: black;
+            font-family: "ChiomaFont", monospace;
+            color: #990e0e;
+        }
 
-    .indent {
-      margin-left: 20px;
-    }
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
 
-    .muted {
-      color: #9c9c9c;
-      cursor: pointer;
-    }
+        /* LOGIN */
+        .login {
+            font-size: 25px;
+            letter-spacing: 2px;
+            padding: 12px 32px;
+            cursor: pointer;
+            z-index: 2;
+        }
 
-    .muted:hover {
-      text-decoration: none;
-    }
+        .login:hover {
+            background: #990e0e;
+            color: black;
+        }
 
-    /* LINEA INTERMITTENTE */
-    .blinking-line {
-      position: absolute;
-      left: -30px;
-      top: 0;
-      color: #9c9c9c;
-      animation: blink 1.6s infinite;
-    }
+        /* VIDEO */
+        video {
+            display: none;
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            cursor: pointer;
+            z-index: 1;
+        }
 
-    @keyframes blink {
-      0%   { opacity: 0.15; }
-      50%  { opacity: 1; }
-      100% { opacity: 0.15; }
-    }
-  </style>
+        /* CARTELLA */
+        .folder-wrapper {
+            display: none;
+            position: relative;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 26px;
+            z-index: 2;
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* RETTANGOLO HOVER ISTANTANEO */
+        .folder-wrapper::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            outline: 2px solid #990e0e;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .folder-wrapper:hover::before,
+        .folder-wrapper:focus-visible::before,
+        .folder-wrapper:active::before {
+            opacity: 1;
+        }
+
+        .folder {
+            width: 40px;
+        }
+
+        /* TESTO "LUCA (D:)" */
+        .folder-label {
+            margin-top: 6px;
+            font-size: 14px;
+            font-family: "LucaFont", monospace;
+            text-align: center;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 810px) {
+            .login { font-size: 20px; }
+            .folder-label { font-size: 13px; }
+        }
+
+        @media (max-width: 390px) {
+            .login { font-size: 16px; }
+            .folder-label { font-size: 12px; }
+        }
+    </style>
 </head>
-
 <body>
 
-  <div class="tree">
+<div class="login" id="login">LOG IN</div>
 
-    <!-- linea intermittente -->
-    <div class="blinking-line">│</div>
+<video id="introVideo" src="assets/JOJI.mp4" playsinline></video>
 
-    <!-- ROOT -->
-    <div class="node" onclick="toggleRoot()">
-      💻 Questo PC
-    </div>
+<div class="folder-wrapper" id="folderWrapper" tabindex="0">
+    <img src="assets/folder.svg" class="folder" alt="Folder">
+    <div class="folder-label">LUCA (D:)</div>
+</div>
 
-    <!-- LIVELLO 1 -->
-    <div id="level1" class="hidden indent">
-      <div>│</div>
+<script>
+const login = document.getElementById("login");
+const video = document.getElementById("introVideo");
+const folderWrapper = document.getElementById("folderWrapper");
 
-      <!-- ARCHIVIO -->
-      <div class="node" onclick="toggleArchivio(event)">
-        └── 📁 (L:)
-      </div>
+function showFolder() {
+    video.pause();
+    video.currentTime = 0;
+    video.style.display = "none";
+    folderWrapper.style.display = "flex";
+}
 
-      <!-- LIVELLO 2 -->
-      <div id="level2" class="hidden indent">
-        <div>│</div>
+login.addEventListener("click", () => {
+    setTimeout(() => {
+        login.style.display = "none";
+        video.style.display = "block";
+        video.play();
+    }, 1000);
+});
 
-        <div class="node muted" onclick="location.href='https://youtu.be/FknatnXUiBQ?si=GotoKlhIwuLvwLe6'">
-          └── maga.mp4
-        </div>
-      </div>
+video.addEventListener("ended", showFolder);
+video.addEventListener("click", showFolder);
 
-    </div>
-
-  </div>
-
-  <script>
-    function toggleRoot() {
-      const level1 = document.getElementById("level1");
-      const level2 = document.getElementById("level2");
-
-      const isOpen = !level1.classList.contains("hidden");
-
-      if (isOpen) {
-        level1.classList.add("hidden");
-        level2.classList.add("hidden");
-      } else {
-        level1.classList.remove("hidden");
-      }
-    }
-
-    function toggleArchivio(e) {
-      e.stopPropagation();
-      document.getElementById("level2").classList.toggle("hidden");
-    }
-  </script>
+/* 👉 CLICK SULLA CARTELLA = REDIRECT */
+folderWrapper.addEventListener("click", () => {
+    window.location.href = "https://youtu.be/yw_LlM6s5aI?si=N-A2oU3O-vNP635Q";
+});
+</script>
 
 </body>
 </html>
