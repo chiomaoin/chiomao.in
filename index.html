@@ -7,11 +7,10 @@
 
 <style>
 * { box-sizing: border-box; }
+
 @font-face {
     font-family: "LoginFont";
     src: url("https://files.catbox.moe/bdhwbm.ttf") format("truetype");
-    font-weight: normal;
-    font-style: normal;
 }
 
 html, body {
@@ -39,7 +38,6 @@ body {
     cursor: pointer;
     z-index: 2;
 }
-
 
 .login:hover {
     background: #990e0e;
@@ -73,7 +71,7 @@ video {
     font-size: 14px;
 }
 
-/* FINESTRE */
+/* WINDOWS */
 .window {
     display: none;
     position: absolute;
@@ -83,38 +81,33 @@ video {
     z-index: 5;
 }
 
-/* HEADER GENERICO */
+/* HEADER */
 .window-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 6px 10px;
+    height: 28px;
+    padding: 0 10px;
     border-bottom: 2px solid #990e0e;
     font-size: 14px;
-}
-
-/* HEADER ROSSO */
-#window .window-header,
-#videoWindow .window-header {
     background: #990e0e;
     color: black;
 }
 
-/* BOTTONE CHIUSURA */
 .close-btn {
+    width: 14px;
+    height: 14px;
     background: none;
     border: none;
-    padding: 0;
     cursor: pointer;
 }
 
 .close-btn img {
     width: 14px;
     height: 14px;
-    display: block;
 }
 
-/* CONTENUTO */
+/* CONTENT */
 .window-content {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -122,7 +115,6 @@ video {
     padding: 16px;
 }
 
-/* ITEM */
 .item {
     display: flex;
     flex-direction: column;
@@ -133,7 +125,6 @@ video {
 .item img {
     width: 32px;
     height: 32px;
-    object-fit: contain;
 }
 
 .item span {
@@ -146,7 +137,7 @@ video {
     text-decoration: underline;
 }
 
-/* FINESTRA VIDEO */
+/* VIDEO WINDOW */
 #videoWindow {
     width: 560px;
     max-width: 90vw;
@@ -157,12 +148,6 @@ video {
     width: 100%;
     aspect-ratio: 16 / 9;
     border: none;
-}
-
-@media (max-width: 768px) {
-    #videoWindow {
-        width: 95vw;
-    }
 }
 </style>
 </head>
@@ -178,26 +163,71 @@ video {
     <div class="folder-label">docs</div>
 </div>
 
-<!-- FINESTRA DOCS -->
+<!-- DOCS -->
 <div class="window" id="window">
     <div class="window-header">
         <span>docs</span>
         <button class="close-btn" id="closeWindow">
-            <img src="https://files.catbox.moe/mbj0n2.svg" alt="close">
+            <img src="https://files.catbox.moe/mbj0n2.svg">
         </button>
     </div>
     <div class="window-content" id="windowContent"></div>
 </div>
 
-<!-- FINESTRA VIDEO -->
+<!-- VIDEO PLAYER -->
 <div class="window" id="videoWindow">
     <div class="window-header">
         <span>bad apple</span>
         <button class="close-btn" id="closeVideo">
-            <img src="https://files.catbox.moe/mbj0n2.svg" alt="close">
+            <img src="https://files.catbox.moe/mbj0n2.svg">
         </button>
     </div>
-    <iframe allow="autoplay; encrypted-media" allowfullscreen></iframe>
+    <iframe allow="autoplay"></iframe>
+</div>
+
+<!-- VIDEO FOLDER -->
+<div class="window" id="videoWindow2">
+    <div class="window-header">
+        <span>docs/video</span>
+        <button class="close-btn" id="closeVideo2">
+            <img src="https://files.catbox.moe/mbj0n2.svg">
+        </button>
+    </div>
+    <div class="window-content">
+        <div class="item" id="badApple">
+            <img src="assets/folder.svg">
+            <span>Bad Apple</span>
+        </div>
+    </div>
+</div>
+
+<!-- PORT-FOLIO -->
+<div class="window" id="portfolioWindow">
+    <div class="window-header">
+        <span>docs/port-folio</span>
+        <button class="close-btn" id="closePortfolio">
+            <img src="https://files.catbox.moe/mbj0n2.svg">
+        </button>
+    </div>
+    <div class="window-content">
+        <div class="item" id="curriculum">
+            <img src="assets/folder.svg">
+            <span>curriculum</span>
+        </div>
+    </div>
+</div>
+
+<!-- CURRICULUM GIF WINDOW -->
+<div class="window" id="curriculumWindow" style="width:360px; max-width:70vw;">
+    <div class="window-header">
+        <span>curriculum</span>
+        <button class="close-btn" id="closeCurriculum">
+            <img src="https://files.catbox.moe/mbj0n2.svg">
+        </button>
+    </div>
+    <div style="padding:16px; text-align:center;">
+        <img src="https://files.catbox.moe/w5omec.gif" style="max-width:100%; height:auto;">
+    </div>
 </div>
 
 <script>
@@ -213,43 +243,38 @@ const videoWindow = document.getElementById("videoWindow");
 const closeVideo = document.getElementById("closeVideo");
 const iframe = videoWindow.querySelector("iframe");
 
-/* FILE DOCS */
-const docsFiles = ["Bad Apple", "clip2.mkv", "movie_final.avi"];
+const videoWindow2 = document.getElementById("videoWindow2");
+const closeVideo2 = document.getElementById("closeVideo2");
 
-/* RENDER DOCS */
+const portfolioWindow = document.getElementById("portfolioWindow");
+const closePortfolio = document.getElementById("closePortfolio");
+
+const curriculumWindow = document.getElementById("curriculumWindow");
+const closeCurriculum = document.getElementById("closeCurriculum");
+
+const docsFiles = ["Video", "Files", "port-folio"];
+
+function center(win) {
+    win.style.display = "block";
+    win.style.top = "50%";
+    win.style.left = "50%";
+    win.style.transform = "translate(-50%, -50%)";
+}
+
 function renderDocs() {
     windowContent.innerHTML = "";
-
     docsFiles.forEach(file => {
         const el = document.createElement("div");
         el.className = "item";
-
-        const icon =
-            file === "Bad Apple"
-                ? "assets/folder.svg"
-                : "assets/folder.svg";
-
-        el.innerHTML = `
-            <img src="${icon}">
-            <span>${file}</span>
-        `;
-
+        el.innerHTML = `<img src="assets/folder.svg"><span>${file}</span>`;
         el.onclick = () => {
-            if (file === "Bad Apple") {
-                iframe.src =
-                    "https://www.youtube.com/embed/2Df_UAtA_Ok?autoplay=1";
-                videoWindow.style.display = "block";
-                videoWindow.style.top = "50%";
-                videoWindow.style.left = "50%";
-                videoWindow.style.transform = "translate(-50%, -50%)";
-            }
+            if (file === "Video") center(videoWindow2);
+            if (file === "port-folio") center(portfolioWindow);
         };
-
         windowContent.appendChild(el);
     });
 }
 
-/* LOGIN → VIDEO → DESKTOP */
 login.onclick = () => {
     login.style.display = "none";
     video.style.display = "block";
@@ -265,20 +290,24 @@ function showDesktop() {
 video.addEventListener("ended", showDesktop);
 video.addEventListener("click", showDesktop);
 
-/* APRI DOCS */
 folderWrapper.onclick = () => {
     windowEl.style.display = "block";
     renderDocs();
 };
 
-/* CHIUDI */
-closeWindow.onclick = () => {
-    windowEl.style.display = "none";
+closeWindow.onclick = () => windowEl.style.display = "none";
+closeVideo.onclick = () => { videoWindow.style.display = "none"; iframe.src = ""; };
+closeVideo2.onclick = () => videoWindow2.style.display = "none";
+closePortfolio.onclick = () => portfolioWindow.style.display = "none";
+closeCurriculum.onclick = () => curriculumWindow.style.display = "none";
+
+document.getElementById("badApple").onclick = () => {
+    iframe.src = "https://www.youtube.com/embed/2Df_UAtA_Ok?autoplay=1";
+    center(videoWindow);
 };
 
-closeVideo.onclick = () => {
-    videoWindow.style.display = "none";
-    iframe.src = "";
+document.getElementById("curriculum").onclick = () => {
+    center(curriculumWindow);
 };
 </script>
 
