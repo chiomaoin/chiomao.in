@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Login</title>
+<title>Login OS</title>
 
 <style>
 * { box-sizing: border-box; }
@@ -44,7 +44,7 @@ body {
     color: black;
 }
 
-/* VIDEO BOOT */
+/* BOOT VIDEO */
 video {
     display: none;
     position: absolute;
@@ -75,32 +75,35 @@ video {
 .window {
     display: none;
     position: absolute;
-    width: 320px;
     background: black;
     border: 2px solid #990e0e;
-    z-index: 5;
+    z-index: 10;
 }
 
 /* HEADER */
 .window-header {
+    position: relative;
     display: flex;
-    justify-content: space-between;
     align-items: center;
     height: 28px;
     padding: 0 10px;
-    border-bottom: 2px solid #990e0e;
-    font-size: 14px;
     background: #990e0e;
     color: black;
+    font-size: 14px;
 }
 
 .close-btn {
-    width: 14px;
-    height: 14px;
+    position: absolute;
+    right: 5px;        /* stesso margine del testo a sinistra */
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
     background: none;
     border: none;
     cursor: pointer;
 }
+
 
 .close-btn img {
     width: 14px;
@@ -141,7 +144,6 @@ video {
 #videoWindow {
     width: 560px;
     max-width: 90vw;
-    z-index: 10;
 }
 
 #videoWindow iframe {
@@ -149,6 +151,11 @@ video {
     aspect-ratio: 16 / 9;
     border: none;
 }
+
+#curriculumWindow img {
+    display: block;
+}
+
 </style>
 </head>
 
@@ -158,20 +165,37 @@ video {
 
 <video id="introVideo" src="assets/osboot.mp4" playsinline preload="auto"></video>
 
+<!-- DESKTOP ICON -->
 <div class="folder-wrapper" id="folderWrapper">
     <img src="assets/folder.svg" class="folder">
     <div class="folder-label">docs</div>
 </div>
 
-<!-- DOCS -->
-<div class="window" id="window">
+<!-- DOCS WINDOW -->
+<div class="window" id="docsWindow" style="width:320px;">
     <div class="window-header">
         <span>docs</span>
-        <button class="close-btn" id="closeWindow">
+        <button class="close-btn" id="closeDocs">
             <img src="https://files.catbox.moe/mbj0n2.svg">
         </button>
     </div>
-    <div class="window-content" id="windowContent"></div>
+    <div class="window-content" id="docsContent"></div>
+</div>
+
+<!-- VIDEO FOLDER -->
+<div class="window" id="videoFolder" style="width:320px;">
+    <div class="window-header">
+        <span>docs/video</span>
+        <button class="close-btn" id="closeVideoFolder">
+            <img src="https://files.catbox.moe/mbj0n2.svg">
+        </button>
+    </div>
+    <div class="window-content">
+        <div class="item" id="badApple">
+            <img src="assets/folder.svg">
+            <span>Bad Apple</span>
+        </div>
+    </div>
 </div>
 
 <!-- VIDEO PLAYER -->
@@ -185,75 +209,36 @@ video {
     <iframe allow="autoplay"></iframe>
 </div>
 
-<!-- VIDEO FOLDER -->
-<div class="window" id="videoWindow2">
-    <div class="window-header">
-        <span>docs/video</span>
-        <button class="close-btn" id="closeVideo2">
-            <img src="https://files.catbox.moe/mbj0n2.svg">
-        </button>
-    </div>
-    <div class="window-content">
-        <div class="item" id="badApple">
-            <img src="assets/folder.svg">
-            <span>Bad Apple</span>
-        </div>
-    </div>
-</div>
-
-<!-- PORT-FOLIO -->
-<div class="window" id="portfolioWindow">
-    <div class="window-header">
-        <span>docs/port-folio</span>
-        <button class="close-btn" id="closePortfolio">
-            <img src="https://files.catbox.moe/mbj0n2.svg">
-        </button>
-    </div>
-    <div class="window-content">
-        <div class="item" id="curriculum">
-            <img src="assets/folder.svg">
-            <span>curriculum</span>
-        </div>
-    </div>
-</div>
-
-<!-- CURRICULUM GIF WINDOW -->
+<!-- CURRICULUM -->
 <div class="window" id="curriculumWindow" style="width:360px;">
     <div class="window-header">
         <span>curriculum</span>
         <button class="close-btn" id="closeCurriculum">
-            <img src="https://files.catbox.moe/mbj0n2.svg">
+            <img src="https://files.catbox.moe/mbj0n2.svg" >
         </button>
     </div>
-    <div style="padding:16px; text-align:center;">
-        <img src="https://files.catbox.moe/w5omec.gif" style="max-width:100%; height:auto;">
+
+        <img src="https://files.catbox.moe/kaa2b6.gif" style="max-width:100%;">
     </div>
 </div>
 
 <script>
 const login = document.getElementById("login");
 const video = document.getElementById("introVideo");
-const folderWrapper = document.getElementById("folderWrapper");
+const folder = document.getElementById("folderWrapper");
 
-const windowEl = document.getElementById("window");
-const windowContent = document.getElementById("windowContent");
-const closeWindow = document.getElementById("closeWindow");
+const docsWindow = document.getElementById("docsWindow");
+const docsContent = document.getElementById("docsContent");
 
+const videoFolder = document.getElementById("videoFolder");
 const videoWindow = document.getElementById("videoWindow");
-const closeVideo = document.getElementById("closeVideo");
 const iframe = videoWindow.querySelector("iframe");
 
-const videoWindow2 = document.getElementById("videoWindow2");
-const closeVideo2 = document.getElementById("closeVideo2");
-
-const portfolioWindow = document.getElementById("portfolioWindow");
-const closePortfolio = document.getElementById("closePortfolio");
-
 const curriculumWindow = document.getElementById("curriculumWindow");
-const closeCurriculum = document.getElementById("closeCurriculum");
 
-const docsFiles = ["Video", "Files", "port-folio"];
+let bootDone = false;
 
+/* UTIL */
 function center(win) {
     win.style.display = "block";
     win.style.top = "50%";
@@ -261,54 +246,68 @@ function center(win) {
     win.style.transform = "translate(-50%, -50%)";
 }
 
+/* DOCS */
+const docsFiles = ["Video", "curriculum"];
+
 function renderDocs() {
-    windowContent.innerHTML = "";
-    docsFiles.forEach(file => {
+    docsContent.innerHTML = "";
+    docsFiles.forEach(name => {
         const el = document.createElement("div");
         el.className = "item";
-        el.innerHTML = `<img src="assets/folder.svg"><span>${file}</span>`;
+        el.innerHTML = `<img src="assets/folder.svg"><span>${name}</span>`;
         el.onclick = () => {
-            if (file === "Video") center(videoWindow2);
-            if (file === "port-folio") center(portfolioWindow);
+            if (name === "Video") center(videoFolder);
+            if (name === "curriculum") center(curriculumWindow);
         };
-        windowContent.appendChild(el);
+        docsContent.appendChild(el);
     });
 }
 
+/* LOGIN */
 login.onclick = () => {
     login.style.display = "none";
     video.style.display = "block";
     video.play();
 };
 
+/* BOOT */
 function showDesktop() {
+    if (bootDone) return;
+    bootDone = true;
     video.pause();
     video.style.display = "none";
-    folderWrapper.style.display = "flex";
+    folder.style.display = "flex";
 }
 
 video.addEventListener("ended", showDesktop);
 video.addEventListener("click", showDesktop);
 
-folderWrapper.onclick = () => {
-    windowEl.style.display = "block";
+/* DESKTOP */
+folder.onclick = () => {
     renderDocs();
+    center(docsWindow);
 };
 
-closeWindow.onclick = () => windowEl.style.display = "none";
-closeVideo.onclick = () => { videoWindow.style.display = "none"; iframe.src = ""; };
-closeVideo2.onclick = () => videoWindow2.style.display = "none";
-closePortfolio.onclick = () => portfolioWindow.style.display = "none";
-closeCurriculum.onclick = () => curriculumWindow.style.display = "none";
-
+/* ACTIONS */
 document.getElementById("badApple").onclick = () => {
     iframe.src = "https://www.youtube.com/embed/2Df_UAtA_Ok?autoplay=1";
     center(videoWindow);
 };
 
-document.getElementById("curriculum").onclick = () => {
-    center(curriculumWindow);
+/* CLOSE */
+document.getElementById("closeDocs").onclick = () =>
+    docsWindow.style.display = "none";
+
+document.getElementById("closeVideoFolder").onclick = () =>
+    videoFolder.style.display = "none";
+
+document.getElementById("closeVideo").onclick = () => {
+    iframe.src = "";
+    videoWindow.style.display = "none";
 };
+
+document.getElementById("closeCurriculum").onclick = () =>
+    curriculumWindow.style.display = "none";
 </script>
 
 </body>
