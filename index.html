@@ -1,136 +1,179 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login</title>
 
-    <style>
-        * {
-            box-sizing: border-box;
-        }
+<style>
+* { box-sizing: border-box; }
 
-        html {
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-        }
+html, body {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    background: black;
+    font-family: monospace;
+    color: #990e0e;
+}
 
-        /* FONT PRINCIPALE */
-        @font-face {
-            font-family: "ChiomaFont";
-            src: url("https://files.catbox.moe/bdhwbm.ttf") format("truetype");
-        }
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
 
-        /* FONT SOLO PER LUCA */
-        @font-face {
-            font-family: "LucaFont";
-            src: url("https://files.catbox.moe/w4j66z.woff2") format("woff2");
-        }
+/* LOGIN */
+.login {
+    font-size: 25px;
+    letter-spacing: 2px;
+    padding: 12px 32px;
+    cursor: pointer;
+    z-index: 2;
+}
 
-        html, body {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-            background: black;
-            font-family: "ChiomaFont", monospace;
-            color: #990e0e;
-        }
+.login:hover {
+    background: #990e0e;
+    color: black;
+}
 
-        body {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-        }
+/* VIDEO BOOT */
+video {
+    display: none;
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1;
+}
 
-        /* LOGIN */
-        .login {
-            font-size: 25px;
-            letter-spacing: 2px;
-            padding: 12px 32px;
-            cursor: pointer;
-            z-index: 2;
-        }
+/* DESKTOP */
+.folder-wrapper {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    z-index: 2;
+}
 
-        .login:hover {
-            background: #990e0e;
-            color: black;
-        }
+.folder { width: 40px; }
 
-        /* VIDEO */
-        video {
-            display: none;
-            position: absolute;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            cursor: pointer;
-            z-index: 1;
-        }
+.folder-label {
+    margin-top: 6px;
+    font-size: 14px;
+}
 
-        /* CARTELLA */
-        .folder-wrapper {
-            display: none;
-            position: relative;
-            flex-direction: column;
-            align-items: center;
-            padding: 20px 26px;
-            z-index: 2;
-            cursor: pointer;
-            -webkit-tap-highlight-color: transparent;
-        }
+/* FINESTRA */
+.window {
+    display: none;
+    position: absolute;
+    width: 320px;
+    background: black;
+    border: 2px solid #990e0e;
+    z-index: 5;
+}
 
-        /* RETTANGOLO HOVER ISTANTANEO */
-        .folder-wrapper::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            outline: 2px solid #990e0e;
-            opacity: 0;
-            pointer-events: none;
-        }
+/* HEADER */
+.window-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 10px;
+    border-bottom: 2px solid #990e0e;
+    font-size: 14px;
+}
 
-        .folder-wrapper:hover::before,
-        .folder-wrapper:focus-visible::before,
-        .folder-wrapper:active::before {
-            opacity: 1;
-        }
+.close-btn {
+    background: none;
+    border: none;
+    color: #990e0e;
+    font-size: 16px;
+    cursor: pointer;
+}
 
-        .folder {
-            width: 40px;
-        }
+.close-btn:hover {
+    background: #990e0e;
+    color: black;
+}
 
-        /* TESTO "LUCA (D:)" */
-        .folder-label {
-            margin-top: 6px;
-            font-size: 14px;
-            font-family: "LucaFont", monospace;
-            text-align: center;
-        }
+/* CONTENUTO */
+.window-content {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    padding: 16px;
+}
 
-        /* RESPONSIVE */
-        @media (max-width: 810px) {
-            .login { font-size: 20px; }
-            .folder-label { font-size: 13px; }
-        }
+/* ITEM */
+.item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+}
 
-        @media (max-width: 390px) {
-            .login { font-size: 16px; }
-            .folder-label { font-size: 12px; }
-        }
-    </style>
+.item img { width: 32px; }
+
+.item span {
+    margin-top: 6px;
+    font-size: 12px;
+    text-align: center;
+}
+
+.item:hover span {
+    text-decoration: underline;
+}
+
+/* SOLO FINESTRA VIDEO */
+#videoWindow {
+    width: 560px;
+    max-width: 90vw;
+    z-index: 10;
+}
+
+#videoWindow iframe {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border: none;
+}
+
+@media (max-width: 768px) {
+    #videoWindow {
+        width: 95vw;
+    }
+}
+</style>
 </head>
+
 <body>
 
 <div class="login" id="login">LOG IN</div>
 
 <video id="introVideo" src="assets/osboot.mp4" playsinline preload="auto"></video>
 
-<div class="folder-wrapper" id="folderWrapper" tabindex="0">
-    <img src="assets/folder.svg" class="folder" alt="Folder">
-    <div class="folder-label">LUCA (D:)</div>
+<div class="folder-wrapper" id="folderWrapper">
+    <img src="assets/folder.svg" class="folder">
+    <div class="folder-label">docs</div>
+</div>
+
+<!-- FINESTRA DOCS -->
+<div class="window" id="window">
+    <div class="window-header">
+        <span id="windowTitle">docs</span>
+        <button class="close-btn" id="closeWindow">✕</button>
+    </div>
+    <div class="window-content" id="windowContent"></div>
+</div>
+
+<!-- FINESTRA VIDEO -->
+<div class="window" id="videoWindow">
+    <div class="window-header">
+        <span>bad apple</span>
+        <button class="close-btn" id="closeVideo">✕</button>
+    </div>
+    <iframe allow="autoplay; encrypted-media" allowfullscreen></iframe>
 </div>
 
 <script>
@@ -138,28 +181,76 @@ const login = document.getElementById("login");
 const video = document.getElementById("introVideo");
 const folderWrapper = document.getElementById("folderWrapper");
 
-function showFolder() {
+const windowEl = document.getElementById("window");
+const windowContent = document.getElementById("windowContent");
+const closeWindow = document.getElementById("closeWindow");
+
+const videoWindow = document.getElementById("videoWindow");
+const closeVideo = document.getElementById("closeVideo");
+const iframe = videoWindow.querySelector("iframe");
+
+/* FILE DOCS */
+const docsFiles = ["bad apple", "clip2.mkv", "movie_final.avi"];
+
+/* RENDER DOCS */
+function renderDocs() {
+    windowContent.innerHTML = "";
+
+    docsFiles.forEach(file => {
+        const el = document.createElement("div");
+        el.className = "item";
+        el.innerHTML = `
+            <img src="assets/folder.svg">
+            <span>${file}</span>
+        `;
+
+        el.onclick = () => {
+            if (file === "bad apple") {
+                iframe.src =
+                    "https://www.youtube.com/embed/2Df_UAtA_Ok?autoplay=1";
+                videoWindow.style.display = "block";
+                videoWindow.style.top = "50%";
+                videoWindow.style.left = "50%";
+                videoWindow.style.transform = "translate(-50%, -50%)";
+            }
+        };
+
+        windowContent.appendChild(el);
+    });
+}
+
+/* LOGIN → VIDEO → DESKTOP */
+login.onclick = () => {
+    login.style.display = "none";
+    video.style.display = "block";
+    video.play();
+};
+
+function showDesktop() {
     video.pause();
-    video.currentTime = 0;
     video.style.display = "none";
     folderWrapper.style.display = "flex";
 }
 
-login.addEventListener("click", () => {
-    setTimeout(() => {
-        login.style.display = "none";
-        video.style.display = "block";
-        video.play();
-    }, 1000);
-});
+video.addEventListener("ended", showDesktop);
+video.addEventListener("click", showDesktop);
 
-video.addEventListener("ended", showFolder);
-video.addEventListener("click", showFolder);
+/* APRI DOCS */
+folderWrapper.onclick = () => {
+    windowEl.style.display = "block";
+    renderDocs();
+};
 
-/* 👉 CLICK SULLA CARTELLA = REDIRECT */
-folderWrapper.addEventListener("click", () => {
-    window.location.href = "https://youtu.be/yw_LlM6s5aI?si=N-A2oU3O-vNP635Q";
-});
+/* CHIUDI FINESTRA DOCS */
+closeWindow.onclick = () => {
+    windowEl.style.display = "none";
+};
+
+/* CHIUDI VIDEO */
+closeVideo.onclick = () => {
+    videoWindow.style.display = "none";
+    iframe.src = "";
+};
 </script>
 
 </body>
