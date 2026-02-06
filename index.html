@@ -32,7 +32,7 @@
             padding: 0;
             width: 100%;
             height: 100%;
-            background: black;
+            background: #d4cfd0;
             font-family: "ChiomaFont", monospace;
             color: #990e0e;
         }
@@ -142,6 +142,8 @@ function showFolder() {
     video.pause();
     video.currentTime = 0;
     video.style.display = "none";
+
+    document.body.style.background = "black";
     folderWrapper.style.display = "flex";
 }
 
