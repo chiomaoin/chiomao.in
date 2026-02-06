@@ -82,6 +82,7 @@
             -webkit-tap-highlight-color: transparent;
         }
 
+        /* RETTANGOLO HOVER */
         .folder-wrapper::before {
             content: "";
             position: absolute;
@@ -159,10 +160,7 @@ login.addEventListener("click", () => {
 
     const playPromise = video.play();
     if (playPromise !== undefined) {
-        playPromise.then(() => {
-            video.muted = false;   // 🔊 AUDIO ON
-            video.volume = 1;
-        }).catch(() => {});
+        playPromise.catch(() => {});
     }
 });
 
