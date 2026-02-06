@@ -7,6 +7,12 @@
 
 <style>
 * { box-sizing: border-box; }
+@font-face {
+    font-family: "LoginFont";
+    src: url("https://files.catbox.moe/bdhwbm.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}
 
 html, body {
     margin: 0;
@@ -26,12 +32,14 @@ body {
 
 /* LOGIN */
 .login {
+    font-family: "LoginFont", monospace;
     font-size: 25px;
     letter-spacing: 2px;
     padding: 12px 32px;
     cursor: pointer;
     z-index: 2;
 }
+
 
 .login:hover {
     background: #990e0e;
@@ -85,14 +93,14 @@ video {
     font-size: 14px;
 }
 
-/* 🔴 HEADER ROSSO (DOCS + VIDEO) */
+/* HEADER ROSSO */
 #window .window-header,
 #videoWindow .window-header {
     background: #990e0e;
     color: black;
 }
 
-/* BOTTONE CHIUSURA (SVG STATICO) */
+/* BOTTONE CHIUSURA */
 .close-btn {
     background: none;
     border: none;
@@ -122,7 +130,11 @@ video {
     cursor: pointer;
 }
 
-.item img { width: 32px; }
+.item img {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+}
 
 .item span {
     margin-top: 6px;
@@ -134,7 +146,7 @@ video {
     text-decoration: underline;
 }
 
-/* SOLO FINESTRA VIDEO */
+/* FINESTRA VIDEO */
 #videoWindow {
     width: 560px;
     max-width: 90vw;
@@ -211,8 +223,14 @@ function renderDocs() {
     docsFiles.forEach(file => {
         const el = document.createElement("div");
         el.className = "item";
+
+        const icon =
+            file === "Bad Apple"
+                ? "assets/folder.svg"
+                : "assets/folder.svg";
+
         el.innerHTML = `
-            <img src="assets/folder.svg">
+            <img src="${icon}">
             <span>${file}</span>
         `;
 
