@@ -32,7 +32,7 @@
             padding: 0;
             width: 100%;
             height: 100%;
-            background: #d4cfd0;
+            background: #d4cfd0; /* LOGIN */
             font-family: "ChiomaFont", monospace;
             color: #990e0e;
         }
@@ -82,7 +82,6 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        /* RETTANGOLO HOVER ISTANTANEO */
         .folder-wrapper::before {
             content: "";
             position: absolute;
@@ -102,7 +101,6 @@
             width: 40px;
         }
 
-        /* TESTO "LUCA (D:)" */
         .folder-label {
             margin-top: 6px;
             font-size: 14px;
@@ -126,7 +124,13 @@
 
 <div class="login" id="login">LOG IN</div>
 
-<video id="introVideo" src="assets/osboot.mp4" playsinline preload="auto"></video>
+<video
+    id="introVideo"
+    src="assets/osboot.mp4"
+    playsinline
+    muted
+    preload="auto">
+</video>
 
 <div class="folder-wrapper" id="folderWrapper" tabindex="0">
     <img src="assets/folder.svg" class="folder" alt="Folder">
@@ -148,17 +152,23 @@ function showFolder() {
 }
 
 login.addEventListener("click", () => {
-    setTimeout(() => {
-        login.style.display = "none";
-        video.style.display = "block";
-        video.play();
-    }, 1000);
+    login.style.display = "none";
+
+    video.style.display = "block";
+    video.currentTime = 0;
+
+    const playPromise = video.play();
+    if (playPromise !== undefined) {
+        playPromise.then(() => {
+            video.muted = false;   // 🔊 AUDIO ON
+            video.volume = 1;
+        }).catch(() => {});
+    }
 });
 
 video.addEventListener("ended", showFolder);
 video.addEventListener("click", showFolder);
 
-/* 👉 CLICK SULLA CARTELLA = REDIRECT */
 folderWrapper.addEventListener("click", () => {
     window.location.href = "https://youtu.be/yw_LlM6s5aI?si=N-A2oU3O-vNP635Q";
 });
