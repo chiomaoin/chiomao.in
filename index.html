@@ -164,7 +164,7 @@ video {
     max-width: 90vw;
 }
 
-/* YOUTUBE FIX */
+/* YOUTUBE FIX (riusato per <video>) */
 .video-content {
     position: relative;
     width: 100%;
@@ -173,7 +173,7 @@ video {
     overflow: hidden;
 }
 
-.video-content iframe {
+.video-content video {
     position: absolute;
     inset: 0;
     width: 100%;
@@ -190,6 +190,7 @@ video {
     display: block;
     max-width: 100%;
 }
+
 </style>
 </head>
 
@@ -221,9 +222,14 @@ video {
         <button class="close-btn" id="closeVideoFolder"></button>
     </div>
     <div class="window-content">
-        <div class="item" id="badApple">
+        <div class="item" id="video1">
             <img src="assets/folder.svg">
             <span>001.avi</span>
+        </div>
+
+        <div class="item" id="video2">
+            <img src="assets/folder.svg">
+            <span>002.avi</span>
         </div>
     </div>
 </div>
@@ -236,11 +242,9 @@ video {
     </div>
 
     <div class="video-content">
-        <iframe
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          referrerpolicy="strict-origin-when-cross-origin"
-          allowfullscreen>
-        </iframe>
+        <video id="videoPlayer" controls autoplay playsinline>
+            <source src="" type="video/mp4">
+        </video>
     </div>
 </div>
 
@@ -263,7 +267,7 @@ const docsContent = document.getElementById("docsContent");
 
 const videoFolder = document.getElementById("videoFolder");
 const videoWindow = document.getElementById("videoWindow");
-const iframe = videoWindow.querySelector("iframe");
+const videoPlayer = document.getElementById("videoPlayer");
 const videoHeader = document.getElementById("videoHeader");
 
 const curriculumWindow = document.getElementById("curriculumWindow");
@@ -321,19 +325,30 @@ folder.onclick = () => {
 };
 
 /* VIDEO OPEN */
-document.getElementById("badApple").onclick = () => {
+document.getElementById("video1").onclick = () => {
     videoHeader.textContent = "001.avi";
-    iframe.src =
-        "https://www.youtube.com/embed/mSfP0u4HBPY" +
-        "?autoplay=1&rel=0&modestbranding=1&controls=1";
+    videoPlayer.src = "https://files.catbox.moe/7dess1.mp4";
+    videoPlayer.play();
+    center(videoWindow);
+};
+
+document.getElementById("video2").onclick = () => {
+    videoHeader.textContent = "002.avi";
+    videoPlayer.src = "https://files.catbox.moe/ng569m.mp4";
+    videoPlayer.play();
     center(videoWindow);
 };
 
 /* CLOSE */
 closeDocs.onclick = () => docsWindow.style.display = "none";
 closeVideoFolder.onclick = () => videoFolder.style.display = "none";
-closeVideo.onclick = () => { iframe.src=""; videoWindow.style.display="none"; };
 closeCurriculum.onclick = () => curriculumWindow.style.display = "none";
+
+closeVideo.onclick = () => {
+    videoPlayer.pause();
+    videoPlayer.src = "";
+    videoWindow.style.display = "none";
+};
 </script>
 
 </body>
