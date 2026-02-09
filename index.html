@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Login OS</title>
+<title>tutturuu</title>
 
 <style>
 * { box-sizing: border-box; }
@@ -64,7 +64,7 @@ video {
     z-index: 2;
 }
 
-.folder { width: 40px; }
+.folder { width: 32px; }
 
 .folder-label {
     margin-top: 6px;
@@ -75,7 +75,7 @@ video {
 .window {
     display: none;
     position: absolute;
-    background: #990e0e; /* stesso colore header */
+    background: #990e0e;
     border: 2px solid #990e0e;
     z-index: 10;
     overflow: hidden;
@@ -93,7 +93,7 @@ video {
     font-size: 14px;
 }
 
-/* CLOSE BUTTON – CSS ONLY */
+/* CLOSE BUTTON */
 .close-btn {
     position: absolute;
     right: 6px;
@@ -202,13 +202,13 @@ video {
 <!-- DESKTOP ICON -->
 <div class="folder-wrapper" id="folderWrapper">
     <img src="assets/folder.svg" class="folder">
-    <div class="folder-label">docs</div>
+    <div class="folder-label">../Upa</div>
 </div>
 
-<!-- DOCS WINDOW -->
+<!-- MAIN WINDOW -->
 <div class="window" id="docsWindow" style="width:320px;">
     <div class="window-header">
-        <span>docs</span>
+        <span>../Upa</span>
         <button class="close-btn" id="closeDocs"></button>
     </div>
     <div class="window-content" id="docsContent"></div>
@@ -217,13 +217,13 @@ video {
 <!-- VIDEO FOLDER -->
 <div class="window" id="videoFolder" style="width:320px;">
     <div class="window-header">
-        <span>docs/video</span>
+        <span>../Upa/video</span>
         <button class="close-btn" id="closeVideoFolder"></button>
     </div>
     <div class="window-content">
         <div class="item" id="badApple">
             <img src="assets/folder.svg">
-            <span>Bad Apple</span>
+            <span>001.avi</span>
         </div>
     </div>
 </div>
@@ -231,7 +231,7 @@ video {
 <!-- VIDEO PLAYER -->
 <div class="window" id="videoWindow">
     <div class="window-header">
-        <span>bad apple</span>
+        <span id="videoHeader">001.avi</span>
         <button class="close-btn" id="closeVideo"></button>
     </div>
 
@@ -250,7 +250,6 @@ video {
         <span>curriculum</span>
         <button class="close-btn" id="closeCurriculum"></button>
     </div>
-
     <img src="https://files.catbox.moe/kaa2b6.gif">
 </div>
 
@@ -265,6 +264,7 @@ const docsContent = document.getElementById("docsContent");
 const videoFolder = document.getElementById("videoFolder");
 const videoWindow = document.getElementById("videoWindow");
 const iframe = videoWindow.querySelector("iframe");
+const videoHeader = document.getElementById("videoHeader");
 
 const curriculumWindow = document.getElementById("curriculumWindow");
 
@@ -322,9 +322,10 @@ folder.onclick = () => {
 
 /* VIDEO OPEN */
 document.getElementById("badApple").onclick = () => {
+    videoHeader.textContent = "001.avi";
     iframe.src =
-         "https://www.youtube.com/embed/vMOMeACE9NM" +
-          "?autoplay=1&rel=0&modestbranding=1&controls=1";
+        "https://www.youtube.com/embed/mSfP0u4HBPY" +
+        "?autoplay=1&rel=0&modestbranding=1&controls=1";
     center(videoWindow);
 };
 
