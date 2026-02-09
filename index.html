@@ -164,7 +164,7 @@ video {
     max-width: 90vw;
 }
 
-/* YOUTUBE FIX (riusato per <video>) */
+/* YOUTUBE FIX */
 .video-content {
     position: relative;
     width: 100%;
@@ -173,7 +173,7 @@ video {
     overflow: hidden;
 }
 
-.video-content video {
+.video-content iframe {
     position: absolute;
     inset: 0;
     width: 100%;
@@ -190,7 +190,6 @@ video {
     display: block;
     max-width: 100%;
 }
-
 </style>
 </head>
 
@@ -242,9 +241,11 @@ video {
     </div>
 
     <div class="video-content">
-        <video id="videoPlayer" controls autoplay playsinline>
-            <source src="" type="video/mp4">
-        </video>
+        <iframe
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerpolicy="strict-origin-when-cross-origin"
+          allowfullscreen>
+        </iframe>
     </div>
 </div>
 
@@ -267,7 +268,7 @@ const docsContent = document.getElementById("docsContent");
 
 const videoFolder = document.getElementById("videoFolder");
 const videoWindow = document.getElementById("videoWindow");
-const videoPlayer = document.getElementById("videoPlayer");
+const iframe = videoWindow.querySelector("iframe");
 const videoHeader = document.getElementById("videoHeader");
 
 const curriculumWindow = document.getElementById("curriculumWindow");
@@ -327,29 +328,26 @@ folder.onclick = () => {
 /* VIDEO OPEN */
 document.getElementById("video1").onclick = () => {
     videoHeader.textContent = "001.avi";
-    videoPlayer.src = "https://files.catbox.moe/7dess1.mp4";
-    videoPlayer.play();
+    iframe.src =
+        "https://www.youtube.com/embed/mSfP0u4HBPY" +
+        "?autoplay=1&rel=0&modestbranding=1&controls=1";
     center(videoWindow);
 };
 
 document.getElementById("video2").onclick = () => {
     videoHeader.textContent = "002.avi";
-    videoPlayer.src = "https://files.catbox.moe/ng569m.mp4";
-    videoPlayer.play();
+    iframe.src =
+        "https://www.youtube.com/embed/i4oOVAFiv5o" +
+        "?autoplay=1&rel=0&modestbranding=1&controls=1";
     center(videoWindow);
 };
 
 /* CLOSE */
 closeDocs.onclick = () => docsWindow.style.display = "none";
 closeVideoFolder.onclick = () => videoFolder.style.display = "none";
+closeVideo.onclick = () => { iframe.src=""; videoWindow.style.display="none"; };
 closeCurriculum.onclick = () => curriculumWindow.style.display = "none";
-
-closeVideo.onclick = () => {
-    videoPlayer.pause();
-    videoPlayer.src = "";
-    videoWindow.style.display = "none";
-};
 </script>
 
 </body>
-</html>
+</html>  al posto del iframe youtube mettici un video normale come quello di un gatto per esempio
