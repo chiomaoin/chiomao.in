@@ -19,7 +19,7 @@ html, body {
     height: 100%;
     background: black;
     font-family: monospace;
-    color: #ffffff;
+    color: #990e0e;
 }
 
 body {
@@ -40,7 +40,7 @@ body {
 }
 
 .login:hover {
-    background: #ffffff;
+    background: #990e0e;
     color: black;
 }
 
@@ -75,25 +75,23 @@ video {
 .window {
     display: none;
     position: absolute;
-    background: #eeeeee;
-    border: 2px solid #eeeeee;
+    background: #990e0e;
+    border: 2px solid #990e0e;
     z-index: 10;
     overflow: hidden;
 }
 
-/* HEADER */
 .window-header {
     position: relative;
     display: flex;
     align-items: center;
     height: 28px;
     padding: 0 10px;
-    background: #eeeeee;
+    background: #990e0e;
     color: black;
     font-size: 14px;
 }
 
-/* CLOSE BUTTON */
 .close-btn {
     position: absolute;
     right: 6px;
@@ -114,7 +112,7 @@ video {
     left: 50%;
     width: 12px;
     height: 2px;
-    background: #eeeeee;
+    background: #990e0e;
     transform-origin: center;
 }
 
@@ -185,7 +183,7 @@ video {
 
 #welcomeText {
     background:black;
-    color:#ffffff;
+    color:#990e0e;
     padding:40px;
     text-align:center;
     font-family:'LoginFont', monospace;
@@ -199,8 +197,10 @@ video {
 
 <div class="login" id="login">LOG IN</div>
 
+<!-- AUDIO BOOT -->
 <audio id="bootSound" src="tada.wav" preload="auto"></audio>
 
+<!-- FINESTRA BOOT -->
 <div class="window" id="welcomeWindow" style="width:400px;">
     <div class="window-header">
         <span>system</span>
@@ -211,13 +211,16 @@ video {
     </div>
 </div>
 
+<!-- VIDEO ancora presente ma non usato -->
 <video id="introVideo" src="assets/osboot.mp4" playsinline preload="auto"></video>
 
+<!-- DESKTOP ICON -->
 <div class="folder-wrapper" id="folderWrapper">
     <img src="assets/folder.svg" class="folder">
     <div class="folder-label">../Upa</div>
 </div>
 
+<!-- MAIN WINDOW -->
 <div class="window" id="docsWindow" style="width:320px;">
     <div class="window-header">
         <span>../Upa</span>
@@ -226,6 +229,7 @@ video {
     <div class="window-content" id="docsContent"></div>
 </div>
 
+<!-- VIDEO FOLDER -->
 <div class="window" id="videoFolder" style="width:320px;">
     <div class="window-header">
         <span>../Upa/video</span>
@@ -243,6 +247,7 @@ video {
     </div>
 </div>
 
+<!-- VIDEO PLAYER -->
 <div class="window" id="videoWindow">
     <div class="window-header">
         <span id="videoHeader">001.avi</span>
@@ -253,6 +258,7 @@ video {
     </div>
 </div>
 
+<!-- CURRICULUM -->
 <div class="window" id="curriculumWindow" style="width:360px;">
     <div class="window-header">
         <span>curriculum</span>
@@ -301,6 +307,7 @@ function renderDocs() {
     });
 }
 
+/* LOGIN */
 login.onclick = () => {
     login.style.display = "none";
     center(welcomeWindow);
@@ -308,6 +315,7 @@ login.onclick = () => {
     bootSound.play().catch(()=>{});
 };
 
+/* CHIUDI BOOT */
 closeWelcome.onclick = () => {
     welcomeWindow.style.display = "none";
     folder.style.display = "flex";
