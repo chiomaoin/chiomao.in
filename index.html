@@ -44,7 +44,7 @@ body {
     color: black;
 }
 
-/* VIDEO (rimane ma non usato) */
+/* BOOT VIDEO */
 video {
     display: none;
     position: absolute;
@@ -81,6 +81,7 @@ video {
     overflow: hidden;
 }
 
+/* HEADER */
 .window-header {
     position: relative;
     display: flex;
@@ -92,6 +93,7 @@ video {
     font-size: 14px;
 }
 
+/* CLOSE BUTTON */
 .close-btn {
     position: absolute;
     right: 6px;
@@ -124,6 +126,7 @@ video {
     transform: translate(-50%, -50%) rotate(-45deg);
 }
 
+/* CONTENT */
 .window-content {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -132,6 +135,7 @@ video {
     background: black;
 }
 
+/* ITEMS */
 .item {
     display: flex;
     flex-direction: column;
@@ -154,11 +158,13 @@ video {
     text-decoration: underline;
 }
 
+/* VIDEO WINDOW */
 #videoWindow {
     width: 560px;
     max-width: 90vw;
 }
 
+/* YOUTUBE FIX */
 .video-content {
     position: relative;
     width: 100%;
@@ -174,21 +180,15 @@ video {
     height: 100%;
     border: 0;
     display: block;
+    background: black;
+    transform: scale(1.01);
+    transform-origin: center;
 }
 
+/* CURRICULUM */
 #curriculumWindow img {
     display: block;
     max-width: 100%;
-}
-
-#welcomeText {
-    background:black;
-    color:#990e0e;
-    padding:40px;
-    text-align:center;
-    font-family:'LoginFont', monospace;
-    font-size:28px;
-    letter-spacing:2px;
 }
 </style>
 </head>
@@ -197,21 +197,6 @@ video {
 
 <div class="login" id="login">LOG IN</div>
 
-<!-- AUDIO BOOT -->
-<audio id="bootSound" src="tada.wav" preload="auto"></audio>
-
-<!-- FINESTRA BOOT -->
-<div class="window" id="welcomeWindow" style="width:400px;">
-    <div class="window-header">
-        <span>system</span>
-        <button class="close-btn" id="closeWelcome"></button>
-    </div>
-    <div id="welcomeText">
-        Uelcom to chiomaos
-    </div>
-</div>
-
-<!-- VIDEO ancora presente ma non usato -->
 <video id="introVideo" src="assets/osboot.mp4" playsinline preload="auto"></video>
 
 <!-- DESKTOP ICON -->
@@ -240,6 +225,7 @@ video {
             <img src="assets/folder.svg">
             <span>001.avi</span>
         </div>
+
         <div class="item" id="video2">
             <img src="assets/folder.svg">
             <span>002.avi</span>
@@ -253,8 +239,13 @@ video {
         <span id="videoHeader">001.avi</span>
         <button class="close-btn" id="closeVideo"></button>
     </div>
+
     <div class="video-content">
-        <iframe allowfullscreen></iframe>
+        <iframe
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerpolicy="strict-origin-when-cross-origin"
+          allowfullscreen>
+        </iframe>
     </div>
 </div>
 
@@ -269,10 +260,8 @@ video {
 
 <script>
 const login = document.getElementById("login");
+const video = document.getElementById("introVideo");
 const folder = document.getElementById("folderWrapper");
-const welcomeWindow = document.getElementById("welcomeWindow");
-const closeWelcome = document.getElementById("closeWelcome");
-const bootSound = document.getElementById("bootSound");
 
 const docsWindow = document.getElementById("docsWindow");
 const docsContent = document.getElementById("docsContent");
@@ -284,6 +273,9 @@ const videoHeader = document.getElementById("videoHeader");
 
 const curriculumWindow = document.getElementById("curriculumWindow");
 
+let bootDone = false;
+
+/* CENTER */
 function center(win) {
     win.style.display = "block";
     win.style.top = "50%";
@@ -291,6 +283,7 @@ function center(win) {
     win.style.transform = "translate(-50%, -50%)";
 }
 
+/* DOCS */
 const docsFiles = ["Video", "curriculum"];
 
 function renderDocs() {
@@ -307,37 +300,48 @@ function renderDocs() {
     });
 }
 
-/* LOGIN */
+/* LOGIN (BOOT DISATTIVATO) */
 login.onclick = () => {
     login.style.display = "none";
-    center(welcomeWindow);
-    bootSound.currentTime = 0;
-    bootSound.play().catch(()=>{});
+    showDesktop();
 };
 
-/* CHIUDI BOOT */
-closeWelcome.onclick = () => {
-    welcomeWindow.style.display = "none";
+/* BOOT */
+function showDesktop() {
+    if (bootDone) return;
+    bootDone = true;
+    video.pause();
+    video.style.display = "none";
     folder.style.display = "flex";
-};
+}
 
+video.addEventListener("ended", showDesktop);
+video.addEventListener("click", showDesktop);
+
+/* DESKTOP */
 folder.onclick = () => {
     renderDocs();
     center(docsWindow);
 };
 
-video1.onclick = () => {
+/* VIDEO OPEN */
+document.getElementById("video1").onclick = () => {
     videoHeader.textContent = "001.avi";
-    iframe.src = "https://www.youtube.com/embed/mSfP0u4HBPY?autoplay=1";
+    iframe.src =
+        "https://www.youtube.com/embed/mSfP0u4HBPY" +
+        "?autoplay=1&rel=0&modestbranding=1&controls=1";
     center(videoWindow);
 };
 
-video2.onclick = () => {
+document.getElementById("video2").onclick = () => {
     videoHeader.textContent = "002.avi";
-    iframe.src = "https://www.youtube.com/embed/i4oOVAFiv5o?autoplay=1";
+    iframe.src =
+        "https://www.youtube.com/embed/i4oOVAFiv5o" +
+        "?autoplay=1&rel=0&modestbranding=1&controls=1";
     center(videoWindow);
 };
 
+/* CLOSE */
 closeDocs.onclick = () => docsWindow.style.display = "none";
 closeVideoFolder.onclick = () => videoFolder.style.display = "none";
 closeVideo.onclick = () => { iframe.src=""; videoWindow.style.display="none"; };
